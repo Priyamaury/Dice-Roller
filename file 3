@@ -1,0 +1,61 @@
+def display_tasks(tasks):
+    if not tasks:
+        print("No tasks in the to-do list.")
+    else:
+        print("To-Do List:")
+        for index, task in enumerate(tasks, start=1):
+            print(f"{index}. {task.strip()}")
+
+def add_task(tasks, new_task):
+    tasks.append(new_task)
+    print(f"Task '{new_task}' added to the to-do list.")
+
+def complete_task(tasks, task_index):
+    if 1 <= task_index <= len(tasks):
+        completed_task = tasks.pop(task_index - 1)
+        print(f"Task '{completed_task}' marked as completed.")
+    else:
+        print("Invalid task number. Please enter a valid task number.")
+
+def save_tasks_to_file(tasks, file_path):
+    with open(file_path, 'w') as file:
+        for task in tasks:
+            file.write(task + '\n')
+
+def load_tasks_from_file(file_path):
+    tasks = []
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as file:
+            tasks = file.readlines()
+    return tasks
+
+def main():
+    todo_file = "todo.txt"
+    tasks = load_tasks_from_file(todo_file)
+
+    while True:
+        print("\nOptions:")
+        print("1. Display To-Do List")
+        print("2. Add Task")
+        print("3. Mark Task as Completed")
+        print("4. Quit")
+
+        choice = input("Enter your choice (1-4): ")
+
+        if choice == "1":
+            display_tasks(tasks)
+        elif choice == "2":
+            new_task = input("Enter the task to add: ")
+            add_task(tasks, new_task)
+        elif choice == "3":
+            task_index = int(input("Enter the task number to mark as completed: "))
+            complete_task(tasks, task_index)
+        elif choice == "4":
+            save_tasks_to_file(tasks, todo_file)
+            print("Exiting the to-do list application. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 4.")
+
+if __name__ == "__main__":
+    main()
